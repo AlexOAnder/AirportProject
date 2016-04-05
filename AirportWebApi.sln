@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirPortWebApi.Infrastructur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirPortWebApi.Tests", "AirPortWebApi.Tests\AirPortWebApi.Tests.csproj", "{8095E567-E23A-4AB8-BB5A-E146F10F425F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirPortWebApi.Data", "AirPortWebApi.Data\AirPortWebApi.Data.csproj", "{C01BB1BB-8618-4D79-B3E3-05FB64ED236D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirPortWebApi.BusinessLogic", "AirPortWebApi.BusinessLogic\AirPortWebApi.BusinessLogic.csproj", "{6AD08EA4-5F0E-4E01-8C2B-AD62B35899C5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{8095E567-E23A-4AB8-BB5A-E146F10F425F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8095E567-E23A-4AB8-BB5A-E146F10F425F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8095E567-E23A-4AB8-BB5A-E146F10F425F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C01BB1BB-8618-4D79-B3E3-05FB64ED236D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C01BB1BB-8618-4D79-B3E3-05FB64ED236D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C01BB1BB-8618-4D79-B3E3-05FB64ED236D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C01BB1BB-8618-4D79-B3E3-05FB64ED236D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD08EA4-5F0E-4E01-8C2B-AD62B35899C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD08EA4-5F0E-4E01-8C2B-AD62B35899C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD08EA4-5F0E-4E01-8C2B-AD62B35899C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD08EA4-5F0E-4E01-8C2B-AD62B35899C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

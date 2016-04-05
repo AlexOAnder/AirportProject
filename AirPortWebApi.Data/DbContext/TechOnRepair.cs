@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirPortWebApi.Infrastructure.DbContext
+namespace AirPortWebApi.Data.DbContext
 {
     using System;
     using System.Collections.Generic;

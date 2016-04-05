@@ -219,8 +219,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\Boostrapper.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\AutofacTypeRegister.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -229,9 +228,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -241,7 +237,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -258,6 +253,10 @@
     <ProjectReference Include="..\AirPort.Common.Tools\AirPortWebApi.Common.Tools.csproj">
       <Project>{a1c1d21a-00f9-401f-bb01-e08600daeaf6}</Project>
       <Name>AirPort.Common.Tools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AirPortWebApi.BusinessLogic\AirPortWebApi.BusinessLogic.csproj">
+      <Project>{6ad08ea4-5f0e-4e01-8c2b-ad62b35899c5}</Project>
+      <Name>AirPortWebApi.BusinessLogic</Name>
     </ProjectReference>
     <ProjectReference Include="..\AirPortWebApi.Infrastructure\AirPortWebApi.Infrastructure.csproj">
       <Project>{4ffd24f2-4c67-4e7b-918e-89bc5a78b09a}</Project>

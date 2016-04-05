@@ -7,23 +7,29 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirPortWebApi.Infrastructure.DbContext
+namespace AirPortWebApi.Data.DbContext
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class TechType
+    public partial class TechPark
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TechType()
+        public TechPark()
         {
-            this.TechPark = new HashSet<TechPark>();
+            this.TechOnRepair = new HashSet<TechOnRepair>();
         }
     
         public int Id { get; set; }
+        public int TechTypeId { get; set; }
         public string Name { get; set; }
+        public System.DateTime DateOfPurchase { get; set; }
+        public System.DateTime LastRepairmentDate { get; set; }
+        public byte IsActive { get; set; }
+        public string ModelName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TechPark> TechPark { get; set; }
+        public virtual ICollection<TechOnRepair> TechOnRepair { get; set; }
+        public virtual TechType TechType { get; set; }
     }
 }
