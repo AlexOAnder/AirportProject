@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AirPortWebApi.BusinessLogic.Service
+namespace AirPortWebApi.BusinessLogic.Services
 {
     public class AirLineService : IAirLineService
     {

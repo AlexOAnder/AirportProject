@@ -45,28 +45,7 @@ namespace AirPortWebApi.Common.Tools
             });
         }
 
-        protected void Register<TClass, TInterface1, TInterface2, TInterface3>(
-            Lifecycles lifecycle = Lifecycles.PerDefaultScope) where TClass : TInterface1, TInterface2, TInterface3
-        {
-            Registrations.Add(new RegistrationInfo
-            {
-                Implementation = typeof(TClass),
-                Interfaces = new[] { typeof(TInterface1), typeof(TInterface2), typeof(TInterface3) },
-                Lifecycle = lifecycle
-            });
-        }
-
-        protected void Register<TClass, TInterface1, TInterface2, TInterface3, TInterface4>(
-            Lifecycles lifecycle = Lifecycles.PerDefaultScope) where TClass : TInterface1, TInterface2, TInterface3, TInterface4
-        {
-            Registrations.Add(new RegistrationInfo
-            {
-                Implementation = typeof(TClass),
-                Interfaces = new[] { typeof(TInterface1), typeof(TInterface2), typeof(TInterface3), typeof(TInterface4) },
-                Lifecycle = lifecycle
-            });
-        }
-
+       
         protected void Register<TClass, TInterface>(object key, Lifecycles lifecycle = Lifecycles.PerDependency)
         {
             Registrations.Add(new RegistrationInfo

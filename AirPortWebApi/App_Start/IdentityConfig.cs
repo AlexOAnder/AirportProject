@@ -25,6 +25,7 @@ namespace AirPortWebApi
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
             };
+            
             // Настройка логики проверки паролей
             manager.PasswordValidator = new PasswordValidator
             {

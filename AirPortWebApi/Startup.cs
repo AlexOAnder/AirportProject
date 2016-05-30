@@ -48,7 +48,7 @@ namespace AirPortWebApi
 
             app.Run(async context =>
             {
-                await context.Response.WriteAsync(getTime() + " My  OWIN App");
+                await context.Response.WriteAsync(getTime() + " ms ->  Initialize success!");
             });
 
             //#test

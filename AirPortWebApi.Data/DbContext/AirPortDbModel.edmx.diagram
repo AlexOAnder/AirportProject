@@ -10,6 +10,10 @@
         <EntityTypeShape EntityType="AirportModel.TechType" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
         <AssociationConnector Association="AirportModel.FK_TechOnRepair_TechPark" ManuallyRouted="false" />
         <AssociationConnector Association="AirportModel.FK_TechPark_TechType" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AirportModel.EventLog" Width="1.5" PointX="3" PointY="4.875" />
+        <EntityTypeShape EntityType="AirportModel.RoleTable" Width="1.5" PointX="5.75" PointY="4.75" />
+        <EntityTypeShape EntityType="AirportModel.StatusType" Width="1.5" PointX="0.75" PointY="5.25" />
+        <AssociationConnector Association="AirportModel.FK_EventLog_StatusType" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
