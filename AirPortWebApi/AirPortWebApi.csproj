@@ -100,11 +100,19 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
@@ -221,11 +229,9 @@
   <ItemGroup>
     <Compile Include="App_Start\AutofacTypeRegister.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\StatusController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
@@ -237,7 +243,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -245,9 +253,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Status\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -259,6 +265,10 @@
     <ProjectReference Include="..\AirPortWebApi.BusinessLogic\AirPortWebApi.BusinessLogic.csproj">
       <Project>{6ad08ea4-5f0e-4e01-8c2b-ad62b35899c5}</Project>
       <Name>AirPortWebApi.BusinessLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AirPortWebApi.Data\AirPortWebApi.Data.csproj">
+      <Project>{C01BB1BB-8618-4D79-B3E3-05FB64ED236D}</Project>
+      <Name>AirPortWebApi.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\AirPortWebApi.Infrastructure\AirPortWebApi.Infrastructure.csproj">
       <Project>{4ffd24f2-4c67-4e7b-918e-89bc5a78b09a}</Project>

@@ -4,7 +4,31 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AirportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AirportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="EventLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="StatusId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RoleTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatusType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="TechOnRepair">
           <Key>
             <PropertyRef Name="Id" />
@@ -34,6 +58,18 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <Association Name="FK_EventLog_StatusType">
+          <End Role="StatusType" Type="Self.StatusType" Multiplicity="1" />
+          <End Role="EventLog" Type="Self.EventLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventLog">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TechOnRepair_TechPark">
           <End Role="TechPark" Type="Self.TechPark" Multiplicity="1" />
           <End Role="TechOnRepair" Type="Self.TechOnRepair" Multiplicity="*" />
@@ -59,9 +95,16 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AirportModelStoreContainer">
+          <EntitySet Name="EventLog" EntityType="Self.EventLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoleTable" EntityType="Self.RoleTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatusType" EntityType="Self.StatusType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TechOnRepair" EntityType="Self.TechOnRepair" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TechPark" EntityType="Self.TechPark" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TechType" EntityType="Self.TechType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EventLog_StatusType" Association="Self.FK_EventLog_StatusType">
+            <End Role="StatusType" EntitySet="StatusType" />
+            <End Role="EventLog" EntitySet="EventLog" />
+          </AssociationSet>
           <AssociationSet Name="FK_TechOnRepair_TechPark" Association="Self.FK_TechOnRepair_TechPark">
             <End Role="TechPark" EntitySet="TechPark" />
             <End Role="TechOnRepair" EntitySet="TechOnRepair" />
@@ -71,8 +114,7 @@
             <End Role="TechPark" EntitySet="TechPark" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AirportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -145,7 +187,52 @@
             <End Role="TechType" EntitySet="TechType" />
             <End Role="TechPark" EntitySet="TechPark" />
           </AssociationSet>
+          <EntitySet Name="EventLog" EntityType="AirportModel.EventLog" />
+          <EntitySet Name="RoleTable" EntityType="AirportModel.RoleTable" />
+          <EntitySet Name="StatusType" EntityType="AirportModel.StatusType" />
+          <AssociationSet Name="FK_EventLog_StatusType" Association="AirportModel.FK_EventLog_StatusType">
+            <End Role="StatusType" EntitySet="StatusType" />
+            <End Role="EventLog" EntitySet="EventLog" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="EventLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StatusType" Relationship="AirportModel.FK_EventLog_StatusType" FromRole="EventLog" ToRole="StatusType" />
+        </EntityType>
+        <EntityType Name="RoleTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StatusType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventLog" Relationship="AirportModel.FK_EventLog_StatusType" FromRole="StatusType" ToRole="EventLog" />
+        </EntityType>
+        <Association Name="FK_EventLog_StatusType">
+          <End Type="AirportModel.StatusType" Role="StatusType" Multiplicity="1" />
+          <End Type="AirportModel.EventLog" Role="EventLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StatusType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventLog">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -181,6 +268,33 @@
               <MappingFragment StoreEntitySet="TechType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventLog">
+            <EntityTypeMapping TypeName="AirportModel.EventLog">
+              <MappingFragment StoreEntitySet="EventLog">
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoleTable">
+            <EntityTypeMapping TypeName="AirportModel.RoleTable">
+              <MappingFragment StoreEntitySet="RoleTable">
+                <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatusType">
+            <EntityTypeMapping TypeName="AirportModel.StatusType">
+              <MappingFragment StoreEntitySet="StatusType">
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

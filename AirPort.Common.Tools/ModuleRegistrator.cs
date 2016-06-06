@@ -11,9 +11,11 @@ namespace AirPortWebApi.Common.Tools
         protected ModuleRegistrator()
         {
             Registrations = new List<RegistrationInfo>();
+            RegistrationTypes = new List<RegistrationInfo>();
         }
 
         public List<RegistrationInfo> Registrations { get; private set; }
+        public List<RegistrationInfo> RegistrationTypes { get; private set; }
 
         public static ModuleRegistrator Create<T>() where T : ModuleRegistrator, new()
         {
@@ -23,6 +25,36 @@ namespace AirPortWebApi.Common.Tools
         }
 
         protected abstract void Init();
+
+        protected void RegisterType<TClass>(Lifecycles lifecycle = Lifecycles.PerDefaultScope) where TClass : class
+        {
+            RegistrationTypes.Add(new RegistrationInfo
+            {
+                Implementation = typeof(TClass),
+                Interfaces = null,
+                Lifecycle = lifecycle
+            });
+        }
+
+        protected void RegisterType(Type type1, Type type2, Lifecycles lifecycle)
+        {
+            RegistrationTypes.Add(new RegistrationInfo
+            {
+                Implementation = type1,
+                Interfaces = new[] { type2 },
+                Lifecycle = lifecycle
+            });
+        }
+
+        protected void RegisterType<TClass, TInterface>(Lifecycles lifecycle = Lifecycles.PerDefaultScope) where TClass : TInterface
+        {
+            RegistrationTypes.Add(new RegistrationInfo
+            {
+                Implementation = typeof(TClass),
+                Interfaces = new[] { typeof(TInterface) },
+                Lifecycle = lifecycle
+            });
+        }
 
         protected void Register<TClass, TInterface>(Lifecycles lifecycle = Lifecycles.PerDefaultScope) where TClass : TInterface
         {

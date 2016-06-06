@@ -1,6 +1,4 @@
-﻿using AirPortWebApi.App_Start;
-using AirPortWebApi.BusinessLogic;
-using AirPortWebApi.Common.Tools;
+﻿
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
@@ -10,6 +8,11 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using AirPortWebApi.BusinessLogic.Services;
+using AirPortWebApi.Infrastructure.Service;
+using AirPortWebApi.Infrastructure.Services;
+using Microsoft.AspNet.Identity.Owin;
 
 
 namespace AirPortWebApi
@@ -17,41 +20,33 @@ namespace AirPortWebApi
     public partial class Startup
     {
         public void Configuration(IAppBuilder app)
-        {
+        { 
             var builder = new ContainerBuilder();
             var config = new HttpConfiguration();
+
+            var corsAttr = new EnableCorsAttribute("http://localhost:3000", "*", "*");
+            config.EnableCors(corsAttr);
+
             builder.RegisterControllers(Assembly.GetExecutingAssembly());
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());
             config.MapHttpAttributeRoutes();
+            config.EnableCors();
+            AutofacTypeRegister.RegisterTypes(builder);
             
             var container = builder.Build();
+            
+            
+           
             config.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-
-            AutofacTypeRegister.RegisterTypes(builder);
-
             app.UseAutofacMiddleware(container);
-            app.UseWebApi(config);
+
             app.UseAutofacWebApi(config);
+            app.UseWebApi(config);
+            
             
             ConfigureAuth(app);
 
-            // test
-            app.Use((context, next) =>
-            {
-                TextWriter output = context.Get<TextWriter>("host.TraceOutput");
-                return next().ContinueWith(result =>
-                {
-                    output.WriteLine("Scheme {0} : Method {1} : Path {2} : MS {3}",
-                    context.Request.Scheme, context.Request.Method, context.Request.Path, getTime());
-                });
-            });
-
-            app.Run(async context =>
-            {
-                await context.Response.WriteAsync(getTime() + " ms ->  Initialize success!");
-            });
-
-            //#test
+            
         }
 
         string getTime()

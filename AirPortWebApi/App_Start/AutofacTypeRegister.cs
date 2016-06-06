@@ -1,20 +1,16 @@
-﻿
-using Autofac;
-using Autofac.Integration.Mvc;
-using Autofac.Integration.WebApi;
-using System.Reflection;
+﻿using AirPortWebApi.BusinessLogic;
 using AirPortWebApi.Common.Tools;
-using System.Web.Mvc;
-using System.Web.Http;
-using AirPortWebApi.BusinessLogic;
+using Autofac;
 
-namespace AirPortWebApi.App_Start
+namespace AirPortWebApi
 {
     public static class AutofacTypeRegister
     {
         public static void RegisterTypes(ContainerBuilder builder)
         {
+            AutoFacHelper.Register<Data.Registrator>(builder);
             AutoFacHelper.Register<Registrator>(builder);
+            
         }
     }
 }

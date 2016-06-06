@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
+using AirPortWebApi.Data.Application;
+using AirPortWebApi.Data.DbContext;
 using AirPortWebApi.Infrastructure.Interfaces;
 
 
@@ -12,16 +17,14 @@ namespace AirPortWebApi.BusinessLogic.Repositories
         private readonly IEnumerable<IDbContext> _dbContexts;
 
         public DbContextContainer(ApplicationDbContext applicationDbContext,
-            ApplicationLogsDbContext applicationLogsDbContext,
-            ConferenceImageDbContext conferenceImageDbContext, Entities entities)
+            ApplicationLogsDbContext applicationLogsDbContext, Entities entities)
         {
             entities.Database.Log = LogEntityFrameworkQueries;
             _dbContexts = new List<IDbContext>
             {
-                applicationDbContext,
-                applicationLogsDbContext,
-                conferenceImageDbContext,
-                entities
+            //    applicationDbContext,
+            //    applicationLogsDbContext,
+                entities,
             };
         }
 
@@ -47,10 +50,11 @@ namespace AirPortWebApi.BusinessLogic.Repositories
             return dbContext;
         }
 
-        //TODO: IMPORTANT Different Dbcontext cannot contain entities with same name 
+        // IMPORTANT Different Dbcontext cannot contain entities with same name 
         private IEnumerable<string> GetContextType(IDbContext dbContext)
         {
-            var objectContext = ((IObjectContextAdapter)dbContext).ObjectContext;
+            var tmp = ((IObjectContextAdapter) dbContext);
+            var objectContext=  tmp.ObjectContext;
             var mdw = objectContext.MetadataWorkspace;
             var items = mdw.GetItems<EntityType>(DataSpace.CSpace);
             return items.Select(i => i.Name).ToList();

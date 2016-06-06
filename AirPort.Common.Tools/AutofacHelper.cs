@@ -1,5 +1,8 @@
 ﻿
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using Autofac;
 using Autofac.Builder;
 
@@ -14,9 +17,65 @@ namespace AirPortWebApi.Common.Tools
         {
             ModuleRegistrator moduleRegistrator = ModuleRegistrator.Create<T>();
             var registrationInfos = moduleRegistrator.Registrations;
+            var regTypes = moduleRegistrator.RegistrationTypes;
             Register(builder, registrationInfos);
+            RegisterTypes(builder, regTypes);
             return moduleRegistrator as T;
         }
+        // register types block
+        public static void RegisterTypes(ContainerBuilder builder, IList<RegistrationInfo> types)
+        {
+            foreach (var item in types)
+            {
+                if (item.Interfaces != null && item.Interfaces.Length>0)
+                {
+                    RegisterType(builder, item.Implementation, item.Interfaces.First(), item.Lifecycle);
+                }
+                else
+                {
+                    RegisterType(builder, item.Implementation, item.Lifecycle);
+                }
+
+            }
+        }
+
+        public static void RegisterType(ContainerBuilder builder,Type regType,Lifecycles lifecycle) 
+        {
+            var bld = builder.RegisterType(regType);
+            switch (lifecycle)
+            {
+                case Lifecycles.Singleton:
+                    bld.SingleInstance();
+                    break;
+                case Lifecycles.PerScope:
+                    bld.InstancePerLifetimeScope();
+                    break;
+                case Lifecycles.PerDependency:
+                    bld.InstancePerDependency();
+                    break;
+            }
+        }
+
+        public static void RegisterType(ContainerBuilder builder, Type regType, Type interfaceType, Lifecycles lifecycle)
+        {
+            if (interfaceType.IsGenericType)
+            {
+                var bld = builder.RegisterGeneric(regType).As(interfaceType);
+            
+                switch (lifecycle)
+                {
+                    case Lifecycles.Singleton:
+                        bld.SingleInstance();
+                        break;
+                    case Lifecycles.PerScope:
+                        bld.InstancePerLifetimeScope();
+                        break;
+                    case Lifecycles.PerDependency:
+                        bld.InstancePerDependency();
+                        break;
+                }
+            }
+    }
 
         public static void Register(ContainerBuilder builder, IList<RegistrationInfo> registrationInfos)
         {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirPortWebApi.BusinessLogic.Service
+namespace AirPortWebApi.BusinessLogic.Services
 {
     public class PersonalService : IPersonalService
     {
