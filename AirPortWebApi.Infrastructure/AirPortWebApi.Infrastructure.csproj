@@ -51,10 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dto\AirPlaneDto.cs" />
-    <Compile Include="Dto\SupportTechDto.cs" />
-    <Compile Include="Dto\TechDto.cs" />
+    <Compile Include="Dto\EventDto.cs" />
+    <Compile Include="Dto\SectionDto.cs" />
+    <Compile Include="Dto\SystemStatusDto.cs" />
+    <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enum\TechType.cs" />
+    <Compile Include="Enum\StatusEnum.cs" />
     <Compile Include="Interfaces\IDbContext.cs" />
     <Compile Include="Interfaces\IDbContextContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

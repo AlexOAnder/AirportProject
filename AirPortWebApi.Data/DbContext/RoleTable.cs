@@ -12,24 +12,18 @@ namespace AirPortWebApi.Data.DbContext
     using System;
     using System.Collections.Generic;
     
-    public partial class TechPark
+    public partial class RoleTable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public TechPark()
+        public RoleTable()
         {
-            this.TechOnRepair = new HashSet<TechOnRepair>();
+            this.UserTable = new HashSet<UserTable>();
         }
     
         public int Id { get; set; }
-        public int TechTypeId { get; set; }
-        public string Name { get; set; }
-        public System.DateTime DateOfPurchase { get; set; }
-        public System.DateTime LastRepairmentDate { get; set; }
-        public byte IsActive { get; set; }
-        public string ModelName { get; set; }
+        public string RoleName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TechOnRepair> TechOnRepair { get; set; }
-        public virtual TechType TechType { get; set; }
+        public virtual ICollection<UserTable> UserTable { get; set; }
     }
 }

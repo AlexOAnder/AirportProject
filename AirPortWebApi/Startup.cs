@@ -24,7 +24,7 @@ namespace AirPortWebApi
             var builder = new ContainerBuilder();
             var config = new HttpConfiguration();
 
-            var corsAttr = new EnableCorsAttribute("http://localhost:3000", "*", "*");
+            var corsAttr = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(corsAttr);
 
             builder.RegisterControllers(Assembly.GetExecutingAssembly());

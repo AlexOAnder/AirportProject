@@ -5,15 +5,14 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="9d7dca69de4545de85b4be5733a994b4" Name="Diagram1">
-        <EntityTypeShape EntityType="AirportModel.TechOnRepair" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirportModel.TechPark" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirportModel.TechType" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <AssociationConnector Association="AirportModel.FK_TechOnRepair_TechPark" ManuallyRouted="false" />
-        <AssociationConnector Association="AirportModel.FK_TechPark_TechType" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="AirportModel.EventLog" Width="1.5" PointX="3" PointY="4.875" />
-        <EntityTypeShape EntityType="AirportModel.RoleTable" Width="1.5" PointX="5.75" PointY="4.75" />
-        <EntityTypeShape EntityType="AirportModel.StatusType" Width="1.5" PointX="0.75" PointY="5.25" />
+        <EntityTypeShape EntityType="AirportModel.EventLog" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="AirportModel.RoleTable" Width="1.5" PointX="2.75" PointY="5.125" />
+        <EntityTypeShape EntityType="AirportModel.SectionTable" Width="1.5" PointX="0.75" PointY="1.5" />
+        <EntityTypeShape EntityType="AirportModel.StatusType" Width="1.5" PointX="0.75" PointY="5.625" />
+        <EntityTypeShape EntityType="AirportModel.UserTable" Width="1.5" PointX="5" PointY="4.875" />
+        <AssociationConnector Association="AirportModel.FK_EventLog_SectionTable" />
         <AssociationConnector Association="AirportModel.FK_EventLog_StatusType" />
+        <AssociationConnector Association="AirportModel.FK_UserTable_RoleTable" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

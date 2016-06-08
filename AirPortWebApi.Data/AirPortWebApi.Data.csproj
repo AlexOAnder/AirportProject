@@ -113,16 +113,13 @@
     <Compile Include="DbContext\RoleTable.cs">
       <DependentUpon>AirPortDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DbContext\SectionTable.cs">
+      <DependentUpon>AirPortDbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DbContext\StatusType.cs">
       <DependentUpon>AirPortDbModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="DbContext\TechOnRepair.cs">
-      <DependentUpon>AirPortDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DbContext\TechPark.cs">
-      <DependentUpon>AirPortDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DbContext\TechType.cs">
+    <Compile Include="DbContext\UserTable.cs">
       <DependentUpon>AirPortDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities.cs" />

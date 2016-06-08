@@ -12,14 +12,18 @@ namespace AirPortWebApi.Data.DbContext
     using System;
     using System.Collections.Generic;
     
-    public partial class TechOnRepair
+    public partial class StatusType
     {
-        public int Id { get; set; }
-        public int TechId { get; set; }
-        public System.DateTime StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public string Description { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public StatusType()
+        {
+            this.EventLog = new HashSet<EventLog>();
+        }
     
-        public virtual TechPark TechPark { get; set; }
+        public int Id { get; set; }
+        public string StatusName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EventLog> EventLog { get; set; }
     }
 }

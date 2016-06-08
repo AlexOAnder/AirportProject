@@ -25,11 +25,10 @@ namespace AirPortWebApi.Data.DbContext
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<TechOnRepair> TechOnRepair { get; set; }
-        public virtual DbSet<TechPark> TechPark { get; set; }
-        public virtual DbSet<TechType> TechType { get; set; }
         public virtual DbSet<EventLog> EventLog { get; set; }
         public virtual DbSet<RoleTable> RoleTable { get; set; }
+        public virtual DbSet<SectionTable> SectionTable { get; set; }
         public virtual DbSet<StatusType> StatusType { get; set; }
+        public virtual DbSet<UserTable> UserTable { get; set; }
     }
 }

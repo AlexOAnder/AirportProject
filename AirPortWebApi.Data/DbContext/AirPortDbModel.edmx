@@ -10,10 +10,13 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Date" Type="datetime" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Updated" Type="datetime" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdatedBy" Type="varchar" MaxLength="50" />
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RoleTable">
           <Key>
@@ -22,6 +25,14 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RoleName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="SectionTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="SectionName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+        </EntityType>
         <EntityType Name="StatusType">
           <Key>
             <PropertyRef Name="Id" />
@@ -29,35 +40,27 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StatusName" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="TechOnRepair">
+        <EntityType Name="UserTable">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="TechId" Type="int" Nullable="false" />
-          <Property Name="StartDate" Type="datetime" Nullable="false" />
-          <Property Name="EndDate" Type="datetime" />
-          <Property Name="Description" Type="varchar" MaxLength="1000" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="TechPark">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="TechTypeId" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="DateOfPurchase" Type="datetime" Nullable="false" />
-          <Property Name="LastRepairmentDate" Type="datetime" Nullable="false" />
-          <Property Name="IsActive" Type="tinyint" Nullable="false" />
-          <Property Name="ModelName" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="TechType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
-        </EntityType>
+        <Association Name="FK_EventLog_SectionTable">
+          <End Role="SectionTable" Type="Self.SectionTable" Multiplicity="1" />
+          <End Role="EventLog" Type="Self.EventLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SectionTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventLog">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EventLog_StatusType">
           <End Role="StatusType" Type="Self.StatusType" Multiplicity="1" />
           <End Role="EventLog" Type="Self.EventLog" Multiplicity="*" />
@@ -70,129 +73,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TechOnRepair_TechPark">
-          <End Role="TechPark" Type="Self.TechPark" Multiplicity="1" />
-          <End Role="TechOnRepair" Type="Self.TechOnRepair" Multiplicity="*" />
+        <Association Name="FK_UserTable_RoleTable">
+          <End Role="RoleTable" Type="Self.RoleTable" Multiplicity="0..1" />
+          <End Role="UserTable" Type="Self.UserTable" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="TechPark">
+            <Principal Role="RoleTable">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="TechOnRepair">
-              <PropertyRef Name="TechId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TechPark_TechType">
-          <End Role="TechType" Type="Self.TechType" Multiplicity="1" />
-          <End Role="TechPark" Type="Self.TechPark" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TechType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TechPark">
-              <PropertyRef Name="TechTypeId" />
+            <Dependent Role="UserTable">
+              <PropertyRef Name="RoleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="AirportModelStoreContainer">
           <EntitySet Name="EventLog" EntityType="Self.EventLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleTable" EntityType="Self.RoleTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SectionTable" EntityType="Self.SectionTable" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StatusType" EntityType="Self.StatusType" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TechOnRepair" EntityType="Self.TechOnRepair" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TechPark" EntityType="Self.TechPark" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="TechType" EntityType="Self.TechType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserTable" EntityType="Self.UserTable" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EventLog_SectionTable" Association="Self.FK_EventLog_SectionTable">
+            <End Role="SectionTable" EntitySet="SectionTable" />
+            <End Role="EventLog" EntitySet="EventLog" />
+          </AssociationSet>
           <AssociationSet Name="FK_EventLog_StatusType" Association="Self.FK_EventLog_StatusType">
             <End Role="StatusType" EntitySet="StatusType" />
             <End Role="EventLog" EntitySet="EventLog" />
           </AssociationSet>
-          <AssociationSet Name="FK_TechOnRepair_TechPark" Association="Self.FK_TechOnRepair_TechPark">
-            <End Role="TechPark" EntitySet="TechPark" />
-            <End Role="TechOnRepair" EntitySet="TechOnRepair" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TechPark_TechType" Association="Self.FK_TechPark_TechType">
-            <End Role="TechType" EntitySet="TechType" />
-            <End Role="TechPark" EntitySet="TechPark" />
+          <AssociationSet Name="FK_UserTable_RoleTable" Association="Self.FK_UserTable_RoleTable">
+            <End Role="RoleTable" EntitySet="RoleTable" />
+            <End Role="UserTable" EntitySet="UserTable" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AirportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="TechOnRepair">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="TechId" Type="Int32" Nullable="false" />
-          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndDate" Type="DateTime" Precision="3" />
-          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TechPark" Relationship="Self.FK_TechOnRepair_TechPark" FromRole="TechOnRepair" ToRole="TechPark" />
-        </EntityType>
-        <EntityType Name="TechPark">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="TechTypeId" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DateOfPurchase" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LastRepairmentDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsActive" Type="Byte" Nullable="false" />
-          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="TechOnRepair" Relationship="Self.FK_TechOnRepair_TechPark" FromRole="TechPark" ToRole="TechOnRepair" />
-          <NavigationProperty Name="TechType" Relationship="Self.FK_TechPark_TechType" FromRole="TechPark" ToRole="TechType" />
-        </EntityType>
-        <EntityType Name="TechType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="TechPark" Relationship="Self.FK_TechPark_TechType" FromRole="TechType" ToRole="TechPark" />
-        </EntityType>
-        <Association Name="FK_TechOnRepair_TechPark">
-          <End Role="TechPark" Type="Self.TechPark" Multiplicity="1" />
-          <End Role="TechOnRepair" Type="Self.TechOnRepair" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TechPark">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TechOnRepair">
-              <PropertyRef Name="TechId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TechPark_TechType">
-          <End Role="TechType" Type="Self.TechType" Multiplicity="1" />
-          <End Role="TechPark" Type="Self.TechPark" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TechType">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="TechPark">
-              <PropertyRef Name="TechTypeId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="TechOnRepair" EntityType="Self.TechOnRepair" />
-          <EntitySet Name="TechPark" EntityType="Self.TechPark" />
-          <EntitySet Name="TechType" EntityType="Self.TechType" />
-          <AssociationSet Name="FK_TechOnRepair_TechPark" Association="Self.FK_TechOnRepair_TechPark">
-            <End Role="TechPark" EntitySet="TechPark" />
-            <End Role="TechOnRepair" EntitySet="TechOnRepair" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TechPark_TechType" Association="Self.FK_TechPark_TechType">
-            <End Role="TechType" EntitySet="TechType" />
-            <End Role="TechPark" EntitySet="TechPark" />
-          </AssociationSet>
           <EntitySet Name="EventLog" EntityType="AirportModel.EventLog" />
           <EntitySet Name="RoleTable" EntityType="AirportModel.RoleTable" />
+          <EntitySet Name="SectionTable" EntityType="AirportModel.SectionTable" />
           <EntitySet Name="StatusType" EntityType="AirportModel.StatusType" />
+          <EntitySet Name="UserTable" EntityType="AirportModel.UserTable" />
+          <AssociationSet Name="FK_EventLog_SectionTable" Association="AirportModel.FK_EventLog_SectionTable">
+            <End Role="SectionTable" EntitySet="SectionTable" />
+            <End Role="EventLog" EntitySet="EventLog" />
+          </AssociationSet>
           <AssociationSet Name="FK_EventLog_StatusType" Association="AirportModel.FK_EventLog_StatusType">
             <End Role="StatusType" EntitySet="StatusType" />
             <End Role="EventLog" EntitySet="EventLog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserTable_RoleTable" Association="AirportModel.FK_UserTable_RoleTable">
+            <End Role="RoleTable" EntitySet="RoleTable" />
+            <End Role="UserTable" EntitySet="UserTable" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="EventLog">
@@ -200,10 +132,14 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Updated" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SectionTable" Relationship="AirportModel.FK_EventLog_SectionTable" FromRole="EventLog" ToRole="SectionTable" />
           <NavigationProperty Name="StatusType" Relationship="AirportModel.FK_EventLog_StatusType" FromRole="EventLog" ToRole="StatusType" />
         </EntityType>
         <EntityType Name="RoleTable">
@@ -212,6 +148,16 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RoleName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="UserTable" Relationship="AirportModel.FK_UserTable_RoleTable" FromRole="RoleTable" ToRole="UserTable" />
+        </EntityType>
+        <EntityType Name="SectionTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="SectionName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EventLog" Relationship="AirportModel.FK_EventLog_SectionTable" FromRole="SectionTable" ToRole="EventLog" />
         </EntityType>
         <EntityType Name="StatusType">
           <Key>
@@ -221,6 +167,28 @@
           <Property Name="StatusName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="EventLog" Relationship="AirportModel.FK_EventLog_StatusType" FromRole="StatusType" ToRole="EventLog" />
         </EntityType>
+        <EntityType Name="UserTable">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RoleTable" Relationship="AirportModel.FK_UserTable_RoleTable" FromRole="UserTable" ToRole="RoleTable" />
+        </EntityType>
+        <Association Name="FK_EventLog_SectionTable">
+          <End Type="AirportModel.SectionTable" Role="SectionTable" Multiplicity="1" />
+          <End Type="AirportModel.EventLog" Role="EventLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SectionTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="EventLog">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EventLog_StatusType">
           <End Type="AirportModel.StatusType" Role="StatusType" Multiplicity="1" />
           <End Type="AirportModel.EventLog" Role="EventLog" Multiplicity="*" />
@@ -233,51 +201,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserTable_RoleTable">
+          <End Type="AirportModel.RoleTable" Role="RoleTable" Multiplicity="0..1" />
+          <End Type="AirportModel.UserTable" Role="UserTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleTable">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserTable">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="AirportModelStoreContainer" CdmEntityContainer="Entities">
-          <EntitySetMapping Name="TechOnRepair">
-            <EntityTypeMapping TypeName="AirportModel.TechOnRepair">
-              <MappingFragment StoreEntitySet="TechOnRepair">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="TechId" ColumnName="TechId" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TechPark">
-            <EntityTypeMapping TypeName="AirportModel.TechPark">
-              <MappingFragment StoreEntitySet="TechPark">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="TechTypeId" ColumnName="TechTypeId" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DateOfPurchase" ColumnName="DateOfPurchase" />
-                <ScalarProperty Name="LastRepairmentDate" ColumnName="LastRepairmentDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TechType">
-            <EntityTypeMapping TypeName="AirportModel.TechType">
-              <MappingFragment StoreEntitySet="TechType">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EventLog">
             <EntityTypeMapping TypeName="AirportModel.EventLog">
               <MappingFragment StoreEntitySet="EventLog">
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="EventName" ColumnName="EventName" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -290,10 +241,29 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="SectionTable">
+            <EntityTypeMapping TypeName="AirportModel.SectionTable">
+              <MappingFragment StoreEntitySet="SectionTable">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SectionName" ColumnName="SectionName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="StatusType">
             <EntityTypeMapping TypeName="AirportModel.StatusType">
               <MappingFragment StoreEntitySet="StatusType">
                 <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserTable">
+            <EntityTypeMapping TypeName="AirportModel.UserTable">
+              <MappingFragment StoreEntitySet="UserTable">
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
