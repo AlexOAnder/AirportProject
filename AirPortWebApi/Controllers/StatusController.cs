@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -32,6 +33,19 @@ namespace AirPortWebApi.Controllers
         public HttpResponseMessage GetServerAvailabilityStatus()
         {
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpGet]
+        [Route("section")]
+        public HttpResponseMessage GetSectionLastEvent([FromUri] int sectionId)
+        {
+            if (sectionId <=0) throw new ValidationException("Section Id cannot be less than 0");
+            var logs = _statusService.GetAllLogs().ToList();
+            var section = _statusService.GetSections().FirstOrDefault(x => x.SectionId == sectionId);
+            if (section==null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest,"Cannot find section with sended sectionId");
+            var res = logs.FirstOrDefault(y => y.SectionId == section.SectionId);
+            if (res == null) return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "No event available");
+            return Request.CreateResponse(HttpStatusCode.OK, res);
         }
 
         [HttpGet]
@@ -82,6 +96,15 @@ namespace AirPortWebApi.Controllers
         {
             var user = new UserDto(); 
             _statusService.Add(eventModel,user);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [HttpPost]
+        [Route("updateEvent")]
+        public HttpResponseMessage UpdateEvent(EventDto eventModel)
+        {
+            var user = new UserDto();
+            _statusService.Update(eventModel, user);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
